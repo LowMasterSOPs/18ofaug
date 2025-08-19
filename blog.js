@@ -3,7 +3,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const SUPABASE_URL = "https://ketluxsokzvlqozcdwxo.supabase.co"
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldGx1eHNva3p2bHFvemNkd3hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNjAzOTIsImV4cCI6MjA3MDkzNjM5Mn0.NCPCOXJ4vD1PYb_sBgoyA6lSvkiRpb8IlA4X8XnltUs"
-// NOTE: This is a public anon key – make sure RLS is enabled on your tables.
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 /* ---------- Utilities ---------- */
@@ -11,34 +10,27 @@ const $ = (sel) => document.querySelector(sel)
 const postsEl    = $("#posts")
 const archiveEl  = $("#archive")
 const featuredEl = $("#featured")
-const singleEl   = $("#single") // optional container for single post pages
+const singleEl   = $("#single") // optional container for single-post pages
 
-// Build link for a post (prefers slug, falls back to id)
+// Link helper (use slug if present)
 const linkFor = (p) => `/blog/${encodeURIComponent(p.slug || String(p.id))}`
 
-// Nice date helper
+// Nice date formatting
 const fmtDate = (d) => {
   if (!d) return ""
   const dt = new Date(d)
   return dt.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
 }
 
-/* ---------- Data ---------- */
-async function fetchFeaturedPost() {
-  const { data, error } = await supabase
-    .from("posts")
-    .select("id,slug,title,content,description,main_image_url,published_at,created_at,featured")
-    .eq("featured", true)
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false, nullsFirst: false })
-    .limit(1)
-  return { data: data?.[0] ?? null, error }
-}
+// Treat various values as "featured"
+const isFeatured = (v) => v === true || v === 1 || v === "1" || String(v).toLowerCase?.() === "true"
 
+/* ---------- Data ---------- */
 async function fetchAllPosts() {
+  // Grab everything once; include `featured` so we can decide client-side
   const { data, error } = await supabase
     .from("posts")
-    .select("id,slug,title,description,main_image_url,published_at,created_at,featured")
+    .select("id,slug,title,description,content,main_image_url,published_at,created_at,featured")
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false, nullsFirst: false })
     .order("id", { ascending: false })
@@ -46,31 +38,26 @@ async function fetchAllPosts() {
 }
 
 async function fetchPostBySlugOrId(key) {
-  // try slug first
   if (!key) return { data: null, error: new Error("No slug/id supplied") }
 
-  // slug path
-  let q = supabase
+  // Try slug
+  let { data, error } = await supabase
     .from("posts")
     .select("id,slug,title,content,description,main_image_url,published_at,created_at")
     .eq("slug", key)
     .limit(1)
 
-  let { data, error } = await q
   if (error) return { data: null, error }
-
   if (data && data.length) return { data: data[0], error: null }
 
-  // fallback: numeric id
+  // Fallback: numeric id
   if (/^\d+$/.test(key)) {
-    const res = await supabase
+    return await supabase
       .from("posts")
       .select("id,slug,title,content,description,main_image_url,published_at,created_at")
       .eq("id", Number(key))
       .single()
-    return res
   }
-
   return { data: null, error: new Error("Post not found") }
 }
 
@@ -103,7 +90,7 @@ function groupByYearMonth(posts) {
     if (!m.has(month)) m.set(month, [])
     m.get(month).push(p)
   }
-  // Sort years desc (numeric & "Unknown" last)
+  // Sort years desc (numeric; "Unknown" last)
   const sortedYears = [...buckets.entries()].sort((a, b) => {
     const [ya, yb] = [a[0], b[0]]
     if (ya === "Unknown") return 1
@@ -143,7 +130,7 @@ function buildArchive(posts) {
 /* ---------- Renderers ---------- */
 async function renderListPage() {
   if (postsEl) postsEl.textContent = "Loading…"
-  const [{ data: featured }, { data: all, error }] = await Promise.all([fetchFeaturedPost(), fetchAllPosts()])
+  const { data: all, error } = await fetchAllPosts()
   if (error) { if (postsEl) postsEl.textContent = "Error loading posts."; return }
 
   if (!all || all.length === 0) {
@@ -153,7 +140,9 @@ async function renderListPage() {
     return
   }
 
-  const hero = featured || all[0]
+  // Hero: prefer first "featured" (true / "TRUE" / 1), else latest
+  const hero = all.find(p => isFeatured(p.featured)) || all[0]
+
   if (featuredEl) {
     featuredEl.innerHTML = `
       ${hero.main_image_url ? `<img src="${hero.main_image_url}" alt="">` : ""}
@@ -167,8 +156,10 @@ async function renderListPage() {
 
   buildArchive(all)
 
+  // Exclude hero from the grid
   const heroKey = hero.slug ?? hero.id
   const rest = all.filter(p => (p.slug ?? p.id) !== heroKey)
+
   if (postsEl) postsEl.innerHTML = ""
   for (const p of rest) {
     const a = document.createElement("a")
@@ -179,24 +170,22 @@ async function renderListPage() {
       <div class="title">${p.title ?? "Untitled"}</div>
       ${p.description ? `<p class="desc">${p.description}</p>` : ""}
     `
-    postsEl?.appendChild(a)
+    postsEl.appendChild(a)
   }
 }
 
 async function renderSinglePage(key) {
-  if (!singleEl) {
-    // If your template uses the same containers, clear them and reuse:
-    if (featuredEl) featuredEl.innerHTML = ""
-    if (archiveEl) archiveEl.innerHTML = ""
-  }
+  // If your template doesn’t have a dedicated #single, reuse the grid area
   const target = singleEl || postsEl
+  if (featuredEl) featuredEl.innerHTML = ""
+  if (archiveEl) archiveEl.innerHTML = ""
   if (target) target.textContent = "Loading…"
 
   const { data: post, error } = await fetchPostBySlugOrId(key)
   if (error || !post) { if (target) target.textContent = "Post not found."; return }
 
-  const heroImg = post.main_image_url ? `<img class="post-hero" src="${post.main_image_url}" alt="">` : ""
   const dateStr = fmtDate(post.published_at || post.created_at)
+  const heroImg = post.main_image_url ? `<img class="post-hero" src="${post.main_image_url}" alt="">` : ""
 
   if (target) {
     target.innerHTML = `
@@ -214,16 +203,12 @@ async function renderSinglePage(key) {
   }
 }
 
-/* ---------- Tiny Router ---------- */
+/* ---------- Router ---------- */
 function getBlogKeyFromPath() {
-  // Supports /blog, /blog/, /blog.html for list
-  // and /blog/<slug-or-id> for single
+  // Supports /blog and /blog/<slug-or-id>
   const path = window.location.pathname
-  // Normalise trailing slash
   if (path === "/blog" || path === "/blog/") return null
-  // If you’re serving the list shell at /blog.html
   if (path.endsWith("/blog.html")) return null
-  // Try to capture /blog/<key>
   const m = path.match(/^\/blog\/([^/]+)\/?$/)
   return m ? decodeURIComponent(m[1]) : null
 }
