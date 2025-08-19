@@ -8,19 +8,21 @@
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="public/S2S.svg">
 
-    <!-- ✅ Google Analytics tracking -->
+  <!-- ✅ Google Analytics tracking -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-395583027"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-395583027');
   </script>
 
-  
-  <!-- Fonts -->
+  <!-- Perf hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ketluxsokzvlqozcdwxo.supabase.co" crossorigin>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -44,7 +46,9 @@
       -moz-osx-font-smoothing:grayscale;
       scroll-behavior:smooth;
     }
-    @media (max-width:768px){ html,body{ background: linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%); } }
+    @media (max-width:768px){
+      html,body{ background: linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%); }
+    }
     body{ padding-left:var(--gutter); padding-right:var(--gutter); }
     body::before{
       content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
@@ -139,7 +143,7 @@
       background:linear-gradient(180deg,rgba(24,33,60,.96),rgba(16,23,42,.78));
     }
 
-    /* GALLERY GRID (no captions) */
+    /* GALLERY GRID */
     .gallery-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -160,7 +164,11 @@
       border-color:rgba(242,107,29,.35);
     }
     .gallery-item img{
-      width:100%; height:240px; object-fit:cover; transition:transform .3s ease;
+      width:100%;
+      height:auto;
+      aspect-ratio: 4 / 3;   /* keeps grid tidy & avoids CLS */
+      object-fit: cover;
+      transition:transform .3s ease;
       display:block;
     }
     .gallery-item:hover img{ transform:scale(1.04); }
@@ -181,7 +189,6 @@
     @media (max-width:1024px){ :root{--gutter:16px} }
     @media (max-width:640px){
       :root{--gutter:12px}
-      .gallery-item img{ height:200px }
     }
   </style>
 </head>
@@ -290,15 +297,19 @@
   <!-- Includes -->
   <script>
     async function include(file, target){
-      const res = await fetch(file);
-      const html = await res.text();
-      document.getElementById(target).innerHTML = html;
+      try{
+        const res = await fetch(file);
+        const html = await res.text();
+        document.getElementById(target).innerHTML = html;
+      }catch(e){
+        console.warn('Include failed for', file, e);
+      }
     }
     include('header.html','header');
     include('footer.html','footer');
   </script>
 
-  <!-- Supabase Gallery + Filters (no captions) -->
+  <!-- Supabase Gallery + Optimised Thumbs -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -307,7 +318,6 @@
       "https://ketluxsokzvlqozcdwxo.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldGx1eHNva3p2bHFvemNkd3hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNjAzOTIsImV4cCI6MjA3MDkzNjM5Mn0.NCPCOXJ4vD1PYb_sBgoyA6lSvkiRpb8IlA4X8XnltUs"
     );
-
     const BUCKET = "images";
 
     // Map UI filter keys to bucket folder paths
@@ -316,7 +326,7 @@
       "built-up-metal": "built-up-metal",
       "trays": "trays",
       "neon-embedded": "neon-embedded",
-      "flat-cut": "Flat Cut" // change to "flat-cut" if your folder uses hyphen
+      "flat-cut": "flat-cut" // ensure this matches your Storage folder
     };
 
     // Elements
@@ -326,7 +336,7 @@
     const emptyEl   = document.getElementById("emptyMessage");
 
     const isImage = (name) =>
-      ["jpg","jpeg","png","gif","webp","svg"].includes(name.split(".").pop().toLowerCase());
+      ["jpg","jpeg","png","gif","webp","avif","svg"].includes(name.split(".").pop().toLowerCase());
 
     function show(state){
       loadingEl.style.display = state === 'loading' ? 'block' : 'none';
@@ -334,19 +344,26 @@
       emptyEl.style.display   = state === 'empty'   ? 'block' : 'none';
       gallery.style.display   = state ? 'none' : 'grid';
     }
-
     function setError(msg){
       errorEl.innerHTML = msg;
       show('error');
     }
 
-    // Cache category -> [{url, name, path}]
+    // Use Supabase transforms to get CDN-optimised URLs
+    function transformedUrl(path, { width, quality = 70, format = 'webp' } = {}){
+      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path, {
+        transform: { width, quality, format }
+      });
+      return data?.publicUrl;
+    }
+
+    // Cache category -> [{thumb, srcset, sizes, full, name, path}]
     const cache = new Map();
 
     async function listAll(path){
       const { data, error } = await supabase.storage.from(BUCKET).list(path || "", {
         limit: 1000,
-        sortBy: { column: "name", order: "asc" }
+        sortBy: { column: "name", order: "desc" }
       });
       if (error) throw error;
 
@@ -372,11 +389,25 @@
 
       const paths = await listAll(folder);
       const items = paths.map((fullPath) => {
-        const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fullPath);
-        const url = urlData?.publicUrl;
         const name = fullPath.split("/").pop();
-        return { url, name, path: fullPath };
-      }).filter(x => !!x.url);
+
+        // Thumbnails for grid (responsive)
+        const w600  = transformedUrl(fullPath, { width: 600,  quality: 70, format: 'webp' });
+        const w900  = transformedUrl(fullPath, { width: 900,  quality: 70, format: 'webp' });
+        const w1200 = transformedUrl(fullPath, { width: 1200, quality: 72, format: 'webp' });
+
+        // Full image for click
+        const full  = transformedUrl(fullPath, { width: 1920, quality: 82, format: 'webp' }) || w1200 || w900 || w600;
+
+        return {
+          name,
+          path: fullPath,
+          thumb: w900,
+          srcset: `${w600} 600w, ${w900} 900w, ${w1200} 1200w`,
+          sizes: "(max-width:640px) 100vw, (max-width:1100px) 50vw, 33vw",
+          full
+        };
+      }).filter(x => !!x.thumb);
 
       cache.set(catKey, items);
       return items;
@@ -395,26 +426,31 @@
         return;
       }
       show(null);
-      for (const it of items){
+
+      items.forEach((it, idx) => {
         const card = document.createElement("div");
         card.className = "gallery-item";
 
         const img = document.createElement("img");
-        img.src = it.url;
-        img.alt = "Gallery image"; // keep alt for accessibility; not shown visually
+        img.src = it.thumb;
+        img.srcset = it.srcset;
+        img.sizes = it.sizes;
+        img.alt = "Gallery image";
         img.loading = "lazy";
+        img.decoding = "async";
+        img.fetchPriority = idx < 6 ? "high" : "low";
 
         card.appendChild(img);
-        card.addEventListener("click", () => window.open(it.url, "_blank"));
+        card.addEventListener("click", () => window.open(it.full || it.thumb, "_blank"));
         gallery.appendChild(card);
-      }
+      });
     }
 
     async function applyFilter(key){
       try{
         show('loading');
         let items = key === 'all' ? await loadAll() : await loadCategory(key);
-        // Optional: newest-ish first by name if you use timestamps
+        // Newest-ish first by filename (if timestamped)
         items.sort((a,b) => a.name < b.name ? 1 : -1);
         render(items);
       } catch(err){
