@@ -3,35 +3,42 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = "https://ketluxsokzvlqozcdwxo.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldGx1eHNva3p2bHFvemNkd3hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNjAzOTIsImV4cCI6MjA3MDkzNjM5Mn0.NCPCOXJ4vD1PYb_sBgoyA6lSvkiRpb8IlA4X8XnltUs";
-// NOTE: public anon key; keep RLS enabled on your tables.
+// NOTE: public anon key — ensure RLS allows anon SELECT where appropriate.
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* ---------- Utilities ---------- */
+/* ---------- DOM helpers ---------- */
 const $ = (sel) => document.querySelector(sel);
 const postsEl    = $("#posts");
 const archiveEl  = $("#archive");
 const featuredEl = $("#featured");
 const singleEl   = $("#single"); // optional container for single-post pages
 
-// Link helper (use slug if present)
 const linkFor = (p) => `/blog/${encodeURIComponent(p.slug || String(p.id))}`;
-
-// Nice date formatting
-const fmtDate = (d) => {
-  if (!d) return "";
-  const dt = new Date(d);
-  return dt.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
-};
+const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" }) : "");
 
 // Treat various values as "featured"
 const isFeatured = (v) =>
   v === true || v === 1 || v === "1" || (typeof v === "string" && v.toLowerCase() === "true");
 
-// Helper to surface errors
+// Surface errors visibly & in console
 function showError(target, msg, err) {
   console.error(msg, err);
-  if (target) {
-    target.innerHTML = `<p class="empty">${msg}</p>`;
+  if (target) target.innerHTML = `<p class="empty">${msg}</p>`;
+}
+
+/* ---------- Includes (header/footer) ---------- */
+async function includePartials({ headerSel = "#header", footerSel = "#footer" } = {}) {
+  try {
+    const [header, footer] = await Promise.all([
+      fetch("/header.html").then((r) => (r.ok ? r.text() : "")),
+      fetch("/footer.html").then((r) => (r.ok ? r.text() : "")),
+    ]);
+    const h = document.querySelector(headerSel);
+    const f = document.querySelector(footerSel);
+    if (h) h.innerHTML = header;
+    if (f) f.innerHTML = footer;
+  } catch (e) {
+    console.error("includePartials failed:", e);
   }
 }
 
@@ -49,7 +56,7 @@ async function fetchAllPosts() {
 async function fetchPostBySlugOrId(key) {
   if (!key) return { data: null, error: new Error("No slug/id supplied") };
 
-  // Try slug
+  // Try slug first
   let { data, error } = await supabase
     .from("posts")
     .select("id,slug,title,content,description,main_image_url,published_at,created_at")
@@ -67,26 +74,11 @@ async function fetchPostBySlugOrId(key) {
       .eq("id", Number(key))
       .single();
   }
+
   return { data: null, error: new Error("Post not found") };
 }
 
-/* ---------- Includes (header/footer) ---------- */
-async function includePartials({ headerSel = "#header", footerSel = "#footer" } = {}) {
-  try {
-    const [header, footer] = await Promise.all([
-      fetch("/header.html").then(r => (r.ok ? r.text() : "")),
-      fetch("/footer.html").then(r => (r.ok ? r.text() : "")),
-    ]);
-    const h = document.querySelector(headerSel);
-    const f = document.querySelector(footerSel);
-    if (h) h.innerHTML = header;
-    if (f) f.innerHTML = footer;
-  } catch (e) {
-    console.error("includePartials failed:", e);
-  }
-}
-
-/* ---------- Archive builder ---------- */
+/* ---------- Archive ---------- */
 function groupByYearMonth(posts) {
   const buckets = new Map();
   for (const p of posts) {
@@ -99,6 +91,7 @@ function groupByYearMonth(posts) {
     if (!m.has(month)) m.set(month, []);
     m.get(month).push(p);
   }
+  // sort years desc; "Unknown" last
   const sortedYears = [...buckets.entries()].sort((a, b) => {
     const [ya, yb] = [a[0], b[0]];
     if (ya === "Unknown") return 1;
@@ -113,23 +106,34 @@ function buildArchive(posts) {
   const grouped = groupByYearMonth(posts);
   archiveEl.innerHTML = "";
   for (const [year, months] of grouped) {
-    const det = document.createElement("details"); det.open = true;
-    const sum = document.createElement("summary"); sum.textContent = year; det.appendChild(sum);
+    const det = document.createElement("details");
+    det.open = true;
+    const sum = document.createElement("summary");
+    sum.textContent = year;
+    det.appendChild(sum);
 
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    const ordered = monthNames.filter(m => months.has(m));
+    const ordered = monthNames.filter((m) => months.has(m));
     if (months.has("Unsorted")) ordered.push("Unsorted");
 
     for (const m of ordered) {
-      const wrap = document.createElement("div"); wrap.className = "month";
-      const h4 = document.createElement("h4"); h4.textContent = m; wrap.appendChild(h4);
-      const ul = document.createElement("ul"); ul.className = "archive-list";
+      const wrap = document.createElement("div");
+      wrap.className = "month";
+      const h4 = document.createElement("h4");
+      h4.textContent = m;
+      wrap.appendChild(h4);
+      const ul = document.createElement("ul");
+      ul.className = "archive-list";
       for (const p of months.get(m)) {
         const li = document.createElement("li");
-        const a = document.createElement("a"); a.href = linkFor(p); a.textContent = p.title || "Untitled";
-        li.appendChild(a); ul.appendChild(li);
+        const a = document.createElement("a");
+        a.href = linkFor(p);
+        a.textContent = p.title || "Untitled";
+        li.appendChild(a);
+        ul.appendChild(li);
       }
-      wrap.appendChild(ul); det.appendChild(wrap);
+      wrap.appendChild(ul);
+      det.appendChild(wrap);
     }
     archiveEl.appendChild(det);
   }
@@ -150,7 +154,7 @@ async function renderListPage() {
   }
 
   // Hero: prefer first "featured" (true / "TRUE" / 1), else latest
-  const hero = all.find(p => isFeatured(p.featured)) || all[0];
+  const hero = all.find((p) => isFeatured(p.featured)) || all[0];
 
   if (featuredEl) {
     featuredEl.innerHTML = `
@@ -165,9 +169,9 @@ async function renderListPage() {
 
   buildArchive(all);
 
-  // Exclude hero from grid
+  // Exclude hero from the grid
   const heroKey = hero.slug ?? hero.id;
-  const rest = all.filter(p => (p.slug ?? p.id) !== heroKey);
+  const rest = all.filter((p) => (p.slug ?? p.id) !== heroKey);
 
   if (postsEl) postsEl.innerHTML = "";
   for (const p of rest) {
