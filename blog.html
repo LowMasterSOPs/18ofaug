@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog | Signs2Signs</title>
+  <link rel="icon" type="image/svg+xml" href="/public/S2S.svg" />
 
-
-    <!-- ✅ Google Analytics tracking -->
+  <!-- ✅ Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-395583027"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-395583027');
+    gtag('config', 'G-395583027', { page_path: window.location.pathname });
+    // belt & braces: explicit page_view after DOM is ready
+    window.addEventListener('DOMContentLoaded', function () {
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+          page_location: location.href,
+          page_path: location.pathname,
+          page_title: document.title
+        });
+      }
+    });
   </script>
 
+  <!-- ✅ Fonts to match index -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
 
-  
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog | Signs2Signs</title>
-  <link rel="icon" type="image/svg+xml" href="/public/S2S.svg" />
   <style>
     :root{
+      --brand:#0B1B4A; --bg:#0A0F1C;
       --card:rgba(255,255,255,.06);
       --stroke:rgba(255,255,255,.12);
       --muted:#cbd5e1;
       --accent:#F26B1D;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;color:#f8fafc;font-family:Manrope,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    html,body{
+      margin:0;
+      color:#f8fafc;
+      font-family:Manrope,system-ui,Segoe UI,Roboto,Arial,sans-serif;
       background:
         url("/public/WEBBG8.png") no-repeat top right fixed,
-        linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%);
+        linear-gradient(180deg,var(--brand) 0%,var(--bg) 60%);
       background-size:auto, cover;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
+    /* Match index: remove bg image on mobile */
+    @media (max-width:768px){
+      html,body{ background: linear-gradient(180deg,var(--brand) 0%,var(--bg) 60%); }
+    }
+
     /* Global link colour */
     a{ color:var(--accent); text-decoration:none }
     a:hover{ text-decoration:underline }
@@ -56,9 +78,15 @@
       color:#e5e7eb;opacity:.95;max-width:900px;margin:12px auto 0
     }
 
-    /* Featured */
-    .featured{margin-bottom:40px;background:var(--card);border:1px solid var(--stroke);border-radius:16px;overflow:hidden}
-    .featured img{width:100%;max-height:400px;object-fit:cover;display:block}
+    /* Featured block (top of page) */
+    .featured{
+      margin-bottom:40px;background:var(--card);
+      border:1px solid var(--stroke);border-radius:16px;overflow:hidden
+    }
+    .featured .skeleton{
+      padding:20px;color:var(--muted);font-style:italic
+    }
+    .featured img{width:100%;max-height:420px;object-fit:cover;display:block}
     .featured-content{padding:20px}
     .featured-content h2{margin:0 0 12px;font-size:clamp(24px,4vw,36px)}
     .featured-content p{margin:0 0 12px;color:var(--muted);line-height:1.5}
@@ -69,7 +97,11 @@
     @media (max-width:900px){ .layout{grid-template-columns:1fr} }
 
     /* Sidebar archive */
-    .sidebar{background:var(--card);border:1px solid var(--stroke);border-radius:14px;padding:12px;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
+    .sidebar{
+      background:var(--card);border:1px solid var(--stroke);
+      border-radius:14px;padding:12px;position:sticky;top:16px;
+      max-height:calc(100vh - 32px);overflow:auto
+    }
     .sidebar h2{font-size:18px;margin:6px 8px 10px}
     details{border:1px solid var(--stroke);border-radius:10px;margin:8px 0;background:rgba(255,255,255,.03)}
     summary{cursor:pointer;padding:10px 12px;font-weight:700;list-style:none}
@@ -107,8 +139,10 @@
     </section>
 
     <section class="container">
-      <!-- Featured post -->
-      <div id="featured" class="featured"></div>
+      <!-- 👍 Featured post (top) -->
+      <div id="featured" class="featured" role="region" aria-label="Featured post">
+        <div class="skeleton">Loading featured post…</div>
+      </div>
 
       <div class="layout">
         <!-- Archive -->
@@ -118,7 +152,8 @@
         </aside>
 
         <!-- Posts grid -->
-        <section>
+        <section aria-labelledby="posts-heading">
+          <h2 id="posts-heading" class="sr-only">Latest posts</h2>
           <div id="posts" class="grid" aria-live="polite">Loading…</div>
         </section>
       </div>
@@ -128,7 +163,21 @@
   <!-- Footer include -->
   <div id="footer"></div>
 
-  <!-- Absolute path so it loads under /blog -->
+  <!-- Load shared header/footer with absolute paths (works under /blog) -->
+  <script>
+    async function include(file, target){
+      try{
+        const res = await fetch(file);
+        const html = await res.text();
+        const el = document.getElementById(target);
+        if (el) el.innerHTML = html;
+      }catch(e){ console.error('Include failed:', e); }
+    }
+    include('/header.html','header');
+    include('/footer.html','footer');
+  </script>
+
+  <!-- Blog router / fetcher -->
   <script type="module" src="/blog.js"></script>
 </body>
 </html>
