@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog | Signs2Signs</title>
+  <link rel="icon" type="image/svg+xml" href="/public/S2S.svg" />
+  <style>
+    :root{
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
+      --muted:#cbd5e1;
+      --accent:#F26B1D;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;color:#f8fafc;font-family:Manrope,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        url("/public/WEBBG8.png") no-repeat top right fixed,
+        linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%);
+      background-size:auto, cover;
+    }
+    /* Global link colour */
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline }
+
+    .container{max-width:1200px;margin:0 auto;padding:32px 20px}
+
+    /* HERO (match site) */
+    .hero{padding:84px 0 28px; text-align:center; position:relative;}
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      color:#c7d2fe;background:rgba(99,102,241,.15);
+      border:1px solid rgba(99,102,241,.35);
+      padding:6px 12px;border-radius:999px;font-weight:800;letter-spacing:.2px
+    }
+    h1.hero-title{
+      font-weight:800; color:#fff; line-height:.95; letter-spacing:-.02em;
+      font-size:clamp(40px,8.5vw,88px); margin:18px 0 10px;
+    }
+    .lede{
+      font-size:clamp(16px,2.2vw,22px);
+      color:#e5e7eb;opacity:.95;max-width:900px;margin:12px auto 0
+    }
+
+    /* Featured */
+    .featured{margin-bottom:40px;background:var(--card);border:1px solid var(--stroke);border-radius:16px;overflow:hidden}
+    .featured img{width:100%;max-height:400px;object-fit:cover;display:block}
+    .featured-content{padding:20px}
+    .featured-content h2{margin:0 0 12px;font-size:clamp(24px,4vw,36px)}
+    .featured-content p{margin:0 0 12px;color:var(--muted);line-height:1.5}
+    .featured-content a{display:inline-block;margin-top:12px}
+
+    /* Layout */
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:24px}
+    @media (max-width:900px){ .layout{grid-template-columns:1fr} }
+
+    /* Sidebar archive */
+    .sidebar{background:var(--card);border:1px solid var(--stroke);border-radius:14px;padding:12px;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
+    .sidebar h2{font-size:18px;margin:6px 8px 10px}
+    details{border:1px solid var(--stroke);border-radius:10px;margin:8px 0;background:rgba(255,255,255,.03)}
+    summary{cursor:pointer;padding:10px 12px;font-weight:700;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    .month{padding:8px 12px 10px}
+    .month h4{margin:8px 0 6px;font-size:14px;color:var(--muted);font-weight:700}
+    .archive-list{margin:0;padding:0;list-style:none}
+    .archive-list a{display:block;padding:6px 8px;border-radius:8px;color:#fff}
+    .archive-list a:hover{background:rgba(255,255,255,.06)}
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+    .card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--stroke);border-radius:14px;overflow:hidden}
+    .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#0b0b0b}
+    .title{margin:14px 14px 6px;font-weight:700}
+    .desc{margin:0 14px 16px;color:var(--muted)}
+    .empty{opacity:.8}
+  </style>
+</head>
+<body>
+  <!-- Header include -->
+  <div id="header"></div>
+
+  <main>
+    <!-- Blog hero -->
+    <section class="hero">
+      <div class="container">
+        <span class="kicker">Insights • Updates • Behind the Scenes</span>
+        <h1 class="hero-title">The Signs2Signs Blog</h1>
+        <p class="lede">
+          Stories, updates, and know-how from the workshop floor. From CNC and laser to full installs —
+          here’s what we’re building in Manny and shipping UK-wide.
+        </p>
+      </div>
+    </section>
+
+    <section class="container">
+      <!-- Featured post -->
+      <div id="featured" class="featured"></div>
+
+      <div class="layout">
+        <!-- Archive -->
+        <aside class="sidebar" aria-label="Blog archive">
+          <h2>Archive</h2>
+          <div id="archive"></div>
+        </aside>
+
+        <!-- Posts grid -->
+        <section>
+          <div id="posts" class="grid" aria-live="polite">Loading…</div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer include -->
+  <div id="footer"></div>
+
+  <!-- Absolute path so it loads under /blog -->
+  <script type="module" src="/blog.js"></script>
+</body>
+</html>
