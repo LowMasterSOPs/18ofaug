@@ -19,39 +19,35 @@
     nav[aria-label="Primary"] a:hover{ background:rgba(255,255,255,.08); }
     .cta{ margin-left:8px; background:var(--accent); color:#0b0b0b; padding:10px 16px; border-radius:10px; font-weight:700; }
 
-    /* Hamburger button (hidden on desktop) */
-    .menu-toggle{
-      appearance:none; border:0; background:transparent; color:#e5e7eb;
-      padding:10px; border-radius:12px; margin-left:auto; display:none; cursor:pointer;
+    /* Mobile dropdown (hidden on desktop) */
+    .mobile-links{ display:none; width:100%; }
+    .mobile-links label{
+      display:block; color:#cbd5e1; font-weight:700; margin:2px 0 6px;
+      text-align:center;
     }
-    .menu-toggle:hover{ background:rgba(255,255,255,.08); }
-    .menu-toggle svg{ width:28px; height:28px; display:block; }
+    .mobile-select{
+      width:100%;
+      background:rgba(255,255,255,.05);
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:800;
+      outline:none;
+    }
+    .mobile-select:focus{ border-color:rgba(255,255,255,.35); }
 
-    /* Mobile panel (hidden by default) */
-    .mobile-menu{
-      position:fixed; inset:0; top:64px; /* sits below sticky header */
-      background:rgba(10,15,28,.98);
-      border-top:1px solid rgba(255,255,255,.06);
-      transform:translateY(-8px); opacity:0; pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
-    }
-    .mobile-menu.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
-    .mobile-menu nav{ padding:18px var(--gutter) 28px; }
-    .mobile-menu ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
-    .mobile-menu a{
-      display:block; text-decoration:none; color:#e5e7eb; font-weight:800;
-      padding:14px 16px; border:1px solid rgba(255,255,255,.12); border-radius:14px;
-      background:rgba(255,255,255,.03);
-    }
-    .mobile-menu a.cta{
-      background:var(--accent); color:#0b0b0b; border-color:transparent;
-    }
-
-    /* Breakpoint: show hamburger, hide desktop nav */
+    /* Breakpoint: switch to centred logo + dropdown */
     @media (max-width:640px){
       nav[aria-label="Primary"]{ display:none; }
-      .menu-toggle{ display:inline-flex; }
-      .nav{ justify-content:space-between; }
+      .nav{
+        justify-content:center;
+        flex-direction:column;
+        gap:10px;
+        padding:10px 0 14px;
+      }
+      .logo{ justify-content:center; }
+      .mobile-links{ display:block; }
     }
   </style>
 
@@ -70,70 +66,25 @@
       </ul>
     </nav>
 
-    <!-- Hamburger button (mobile only) -->
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-      <!-- burger -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Mobile slide-down panel -->
-  <div id="mobileMenu" class="mobile-menu" hidden>
-    <nav aria-label="Mobile">
-      <ul>
-        <li><a href="/services.html">Services</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/gallery.html">Gallery</a></li>
-        <li><a href="/contact.html#quote" class="cta">Get a Quote</a></li>
-      </ul>
-    </nav>
+    <!-- Mobile dropdown -->
+    <div class="mobile-links" aria-label="Mobile navigation">
+      <label for="mobileNav">Pages</label>
+      <select id="mobileNav" class="mobile-select" aria-label="Go to page">
+        <option value="">Select a page…</option>
+        <option value="/services.html">Services</option>
+        <option value="/blog">Blog</option>
+        <option value="/gallery.html">Gallery</option>
+        <option value="/contact.html#quote">Get a Quote</option>
+      </select>
+    </div>
   </div>
 
   <script>
     (function(){
-      const btn = document.querySelector('.menu-toggle');
-      const panel = document.getElementById('mobileMenu');
-      const html = document.documentElement;
-
-      function openMenu(){
-        panel.hidden = false;
-        requestAnimationFrame(() => panel.classList.add('open'));
-        btn.setAttribute('aria-expanded', 'true');
-        btn.setAttribute('aria-label','Close menu');
-        html.style.overflow = 'hidden'; // lock scroll
-      }
-      function closeMenu(){
-        panel.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label','Open menu');
-        html.style.overflow = '';
-        // hide after transition
-        panel.addEventListener('transitionend', () => { if(!panel.classList.contains('open')) panel.hidden = true; }, { once:true });
-      }
-
-      btn.addEventListener('click', () => {
-        const open = btn.getAttribute('aria-expanded') === 'true';
-        open ? closeMenu() : openMenu();
+      const sel = document.getElementById('mobileNav');
+      sel.addEventListener('change', () => {
+        if(sel.value) window.location.href = sel.value;
       });
-
-      // Close when tapping outside the card area
-      panel.addEventListener('click', (e) => {
-        if(e.target === panel) closeMenu();
-      });
-
-      // Close on Escape
-      document.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') closeMenu();
-      });
-
-      // Safety: reset if resized to desktop
-      const mq = window.matchMedia('(min-width: 641px)');
-      mq.addEventListener('change', (e) => { if(e.matches) closeMenu(); });
     })();
   </script>
 </header>
