@@ -8,23 +8,23 @@
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="public/S2S.svg">
 
-
-
-  <!-- ✅ Google Analytics tracking -->
+  <!-- ✅ Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-395583027"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-395583027');
+    gtag('config', 'G-395583027', {
+      page_path: window.location.pathname
+    });
   </script>
 
-  
-  <!-- Fonts -->
+  <!-- ✅ Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
 
+  <!-- ✅ Styles -->
   <style>
     :root{
       --brand:#0B1B4A; --brand-2:#1F3FAF;
@@ -68,11 +68,9 @@
     .muted{color:var(--muted)}
     .center{text-align:center}
 
-    /* Layout */
     section{padding:36px 0}
     .hero{padding:84px 0 56px;text-align:center; position:relative;}
 
-    /* Typography */
     .kicker{
       display:inline-flex;align-items:center;gap:8px;
       color:#c7d2fe;background:rgba(99,102,241,.15);
@@ -108,7 +106,6 @@
     .btn-primary{background:var(--accent);color:#111827}
     .btn-primary:hover{ box-shadow:0 18px 40px rgba(242,107,29,.35) }
 
-    /* PROPER-styled (icy blue) secondary */
     .btn-proper{
       color:var(--ice);
       background:linear-gradient(180deg, rgba(175,195,255,.10), rgba(175,195,255,.04));
@@ -121,27 +118,16 @@
       box-shadow:0 0 22px rgba(31,63,175,.35), 0 16px 36px rgba(0,0,0,.35);
       transform:translateY(-1px);
     }
-    .btn-proper:hover .star{
-      opacity:1; transform:scale(1) rotate(0deg);
-      animation: twinkle .6s ease forwards;
-    }
-    @keyframes twinkle{
-      0%,100%{ transform:scale(1) rotate(0deg); opacity:1 }
-      50%{ transform:scale(1.3) rotate(15deg); opacity:.7 }
-    }
 
-    /* Badges */
     .badges{ margin-top:22px; overflow:hidden; mask-image:linear-gradient(90deg,transparent,black 10%, black 90%, transparent) }
     .badge-track{ display:flex; gap:14px; white-space:nowrap; animation:slide 20s linear infinite }
     .badge{border:1px solid rgba(255,255,255,.18); padding:8px 12px; border-radius:999px; color:#cbd5e1; background:rgba(255,255,255,.06)}
     @keyframes slide { from{ transform:translateX(0)} to{ transform:translateX(-50%) } }
     @media (prefers-reduced-motion:reduce){ .badge-track{ animation:none } }
 
-    /* Section headings */
     section h2{color:#fff;font-size:clamp(26px,3.6vw,40px);margin:0 0 18px;text-align:center}
     section p{color:#cbd5e1;margin:0 0 10px}
 
-    /* ===== Feature Cards ===== */
     .cards{
       display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
     }
@@ -167,7 +153,6 @@
       border-color:rgba(242,107,29,.45);
     }
 
-    /* ===== Services icon grid ===== */
     .svc-icons{
       display:grid; grid-template-columns:repeat(6,1fr); gap:16px; margin-top:20px;
     }
@@ -193,13 +178,11 @@
     .svc-tile svg{ width:28px; height:28px; stroke:currentColor; fill:none; stroke-width:2; }
     .svc-tile strong{ color:#fff; font-size:14px }
 
-    /* Scroll cue */
     .scroll-cue{
       position:absolute; left:50%; transform:translateX(-50%);
       bottom:14px; font-size:12px; color:#cbd5e1; opacity:.7;
     }
 
-    /* Sticky CTA (mobile) */
     .sticky-cta{
       position:fixed; left:0; right:0; bottom:12px; z-index:50; display:none; justify-content:center;
     }
@@ -209,7 +192,6 @@
       border-radius:999px; padding:14px 18px; font-weight:800; box-shadow:0 12px 28px rgba(242,107,29,.35);
     }
 
-    /* Responsive */
     @media (max-width:1200px){ .svc-icons{ grid-template-columns:repeat(3,1fr) } }
     @media (max-width:1024px){
       :root{--gutter:16px}
@@ -224,8 +206,6 @@
       .container, section, .hero, .center { text-align:center; }
       .kicker { margin-inline:auto; }
       .hero-actions { justify-content:center; }
-
-      /* HIDE ticker + sticky CTA on mobile */
       .badges { display:none !important; }
       .sticky-cta{ display:none !important; }
     }
@@ -236,31 +216,26 @@
   <!-- Header include -->
   <div id="header"></div>
 
-  <!-- Main -->
   <main>
+    <!-- Hero -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="container">
         <span class="kicker">Manchester • Trade Sign Specialists</span>
-
         <h1 id="hero-title" class="hero-title">
           SIGNS THAT LOOK <span class="mint">MINT.</span><br>
           BUILT <span class="proper">PROPER</span>.<br>
           READY TO FIT.
         </h1>
-
         <p class="lede">
           Your designs, our graft. Cut, fab and finish under one roof.<br>
           Collect in Manny or get it dropped at your door.
         </p>
-
-        <div class="hero-actions" role="group" aria-label="Primary actions">
+        <div class="hero-actions">
           <a class="btn btn-primary" href="contact.html#quote">Price it up</a>
-          <a class="btn btn-proper" href="gallery.html">See recent work </a>
+          <a class="btn btn-proper" href="gallery.html">See recent work</a>
         </div>
-
         <br>
-
-        <!-- badges (hidden on mobile) -->
+        <!-- badges -->
         <div class="badges" aria-hidden="true">
           <div class="badge-track">
             <span class="badge">⚡ Fast lead times</span>
@@ -281,8 +256,7 @@
             <span class="badge">🧭 Collect in Manchester</span>
             <span class="badge">🚚 Express courier options</span>
             <span class="badge">🧩 CAD help available</span>
-
-            <!-- duplicate for seamless loop -->
+            <!-- duplicated for loop -->
             <span class="badge">⚡ Fast lead times</span>
             <span class="badge">🛠️ CNC • Laser • Print</span>
             <span class="badge">🧰 Trade-only fabrication</span>
@@ -306,85 +280,31 @@
       </div>
     </section>
 
-    <!-- 4 dark feature cards -->
+    <!-- 4 Feature Cards -->
     <section aria-labelledby="why-us">
       <div class="container">
         <h2 id="why-us">Built here. Built to last. Built for trade.</h2>
         <div class="cards">
-          <div class="card">
-            <h3>Experience + Innovation</h3>
-            <p>From 3D acrylic letters to aluminium trays, every sign is built to the highest standard. Craft meets state-of-the-art kit.</p>
-          </div>
-          <div class="card">
-            <h3>Speed + Capacity</h3>
-            <p>One-offs or high-volume rollouts across the UK & Europe — we’ve got the people and machines to deliver on time.</p>
-          </div>
-          <div class="card">
-            <h3>All Shapes + Sizes</h3>
-            <p>Flat cut logos, built-up acrylics, composite trays — internal or external. If it can be made, we’ll make it proper.</p>
-          </div>
-          <div class="card">
-            <h3>Trusted Trade Partner</h3>
-            <p>Behind the scenes for nationals and independents alike. We help our trade clients hit deadlines without compromise.</p>
-          </div>
+          <div class="card"><h3>Experience + Innovation</h3><p>From 3D acrylic letters to aluminium trays, every sign is built to the highest standard. Craft meets state-of-the-art kit.</p></div>
+          <div class="card"><h3>Speed + Capacity</h3><p>One-offs or high-volume rollouts across the UK & Europe — we’ve got the people and machines to deliver on time.</p></div>
+          <div class="card"><h3>All Shapes + Sizes</h3><p>Flat cut logos, built-up acrylics, composite trays — internal or external. If it can be made, we’ll make it proper.</p></div>
+          <div class="card"><h3>Trusted Trade Partner</h3><p>Behind the scenes for nationals and independents alike. We help our trade clients hit deadlines without compromise.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- Services with icons -->
+    <!-- Services -->
     <section id="services" aria-labelledby="what-we-make">
       <div class="container">
         <h2 id="what-we-make">What we’re built for</h2>
         <p class="lede center">Specialist manufacturing for the trade — from precision cutting to crisp illumination and tidy finishes.</p>
-
-        <div class="svc-icons" role="list">
-          <!-- 3D Acrylic -->
-          <a class="svc-tile" href="services.html#3d-acrylic" role="listitem" aria-label="3D Acrylic Letters">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 20l8-16 8 16"/><path d="M7.5 14h9"/></svg>
-            </div>
-            <strong>3D Acrylic</strong>
-          </a>
-
-          <!-- Sign Trays -->
-          <a class="svc-tile" href="services.html#sign-trays" role="listitem" aria-label="Sign Trays">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 9h16"/></svg>
-            </div>
-            <strong>Sign Trays</strong>
-          </a>
-
-          <!-- Illumination -->
-          <a class="svc-tile" href="services.html#illumination" role="listitem" aria-label="Illumination">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.2 1.2 4.2 3 5.3.7.4 1 1.2 1 2.7h6c0-1.5.3-2.3 1-2.7 1.8-1.1 3-3.1 3-5.3a7 7 0 0 0-7-7z"/><path d="M9 12h6M9 18h6M10 22h4"/></svg>
-            </div>
-            <strong>Illumination</strong>
-          </a>
-
-          <!-- Built-up Metal -->
-          <a class="svc-tile" href="services.html#built-up-metal" role="listitem" aria-label="Built-up Metal Letters">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 16V8l8-4 8 4v8l-8 4-8-4z"/><path d="M12 4v16"/></svg>
-            </div>
-            <strong>Built-Up Metal</strong>
-          </a>
-
-          <!-- CNC & Laser Cutting -->
-          <a class="svc-tile" href="services.html#cnc-laser" role="listitem" aria-label="CNC and Laser Cutting">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 8h16"/><path d="M12 8v5"/><rect x="11" y="13" width="2" height="3" rx="0.5"/><rect x="3" y="17" width="18" height="3" rx="1"/><path d="M7 15h10"/></svg>
-            </div>
-            <strong>CNC &amp; Laser Cutting</strong>
-          </a>
-
-          <!-- Print -->
-          <a class="svc-tile" href="services.html#print-large-format" role="listitem" aria-label="Print & Large Format">
-            <div class="ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" rx="1"/><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 15h8"/></svg>
-            </div>
-            <strong>Print &amp; Graphics</strong>
-          </a>
+        <div class="svc-icons">
+          <a class="svc-tile" href="services.html#3d-acrylic"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20l8-16 8 16"/><path d="M7.5 14h9"/></svg></div><strong>3D Acrylic</strong></a>
+          <a class="svc-tile" href="services.html#sign-trays"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 9h16"/></svg></div><strong>Sign Trays</strong></a>
+          <a class="svc-tile" href="services.html#illumination"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.2 1.2 4.2 3 5.3.7.4 1 1.2 1 2.7h6c0-1.5.3-2.3 1-2.7 1.8-1.1 3-3.1 3-5.3a7 7 0 0 0-7-7z"/><path d="M9 12h6M9 18h6M10 22h4"/></svg></div><strong>Illumination</strong></a>
+          <a class="svc-tile" href="services.html#built-up-metal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 16V8l8-4 8 4v8l-8 4-8-4z"/><path d="M12 4v16"/></svg></div><strong>Built-Up Metal</strong></a>
+          <a class="svc-tile" href="services.html#cnc-laser"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h16"/><path d="M12 8v5"/><rect x="11" y="13" width="2" height="3"/><rect x="3" y="17" width="18" height="3"/><path d="M7 15h10"/></svg></div><strong>CNC & Laser Cutting</strong></a>
+          <a class="svc-tile" href="services.html#print-large-format"><div class="ic"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6"/><rect x="5" y="11" width="14" height="10"/><path d="M8 15h8"/></svg></div><strong>Print & Graphics</strong></a>
         </div>
       </div>
     </section>
@@ -398,16 +318,16 @@
     </section>
   </main>
 
-  <!-- Sticky CTA (kept in DOM but hidden on mobile via CSS) -->
+  <!-- Sticky CTA -->
   <div class="sticky-cta">
-    <a href="contact.html#quote" aria-label="Get a fast quote">Get a fast quote</a>
+    <a href="contact.html#quote">Get a fast quote</a>
   </div>
 
   <!-- Footer include -->
   <div id="footer"></div>
 
   <script>
-    // Simple include helper for header/footer
+    // Simple include helper
     async function include(file, target){
       try{
         const res = await fetch(file);
@@ -420,7 +340,7 @@
     include('header.html','header');
     include('footer.html','footer');
 
-    // Respect reduced motion: pause badge track if requested
+    // Respect reduced motion
     (function(){
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
       const track = document.querySelector('.badge-track');
