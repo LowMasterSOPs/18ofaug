@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get a Quote | Signs2Signs — Trade Signage, Built in Manchester</title>
+  <meta name="description" content="Professional signage quotes for trade customers — fast turnaround, straight talk, no fluff.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="public/S2S.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand:#0B1B4A; --brand-2:#1F3FAF;
+      --accent:#F26B1D; --bg:#0A0F1C;
+      --ice:#AFC3FF;
+      --muted:#9CA3AF;
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.25);
+      --gutter:24px;
+      --input-bg: rgba(255,255,255,.06);
+      --input-border: rgba(255,255,255,.12);
+      --input-text: #e5e7eb;
+      --form-max:520px;
+    }
+
+    html,body{
+      margin:0; padding:0;
+      font-family:Manrope,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+      color:#f8fafc;
+      background:
+        url("public/WEBBG4.png") no-repeat top right fixed,
+        linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%);
+      background-size: auto, cover;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
+    }
+
+    @media (max-width:768px){
+      html,body{ background: linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%); }
+    }
+
+    body{ padding-left:var(--gutter); padding-right:var(--gutter); }
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background:
+        radial-gradient(60% 60% at 20% 20%, rgba(242,107,29,.22) 0%, rgba(242,107,29,0) 60%),
+        radial-gradient(70% 70% at 80% 12%, rgba(31,63,175,.25) 0%, rgba(31,63,175,0) 65%);
+      filter:blur(110px);
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin:0 auto}
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+
+    /* Sections */
+    section{padding:36px 0}
+    section h2{color:#fff;font-size:clamp(26px,3.6vw,40px);margin:0 0 14px}
+    section p{color:#cbd5e1;margin:0 0 10px}
+
+    /* HERO — match index */
+    .hero{padding:84px 0 40px; text-align:center; position:relative;}
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      color:#c7d2fe;background:rgba(99,102,241,.15);
+      border:1px solid rgba(99,102,241,.35);
+      padding:6px 12px;border-radius:999px;font-weight:800;letter-spacing:.2px
+    }
+    h1.hero-title{
+      font-weight:800; color:#fff; line-height:.95; letter-spacing:-.02em;
+      font-size:clamp(40px,8.5vw,88px); margin:18px 0 10px;
+    }
+    .lede{
+      font-size:clamp(16px,2.2vw,22px);
+      color:#e5e7eb;opacity:.95;max-width:900px;margin:12px auto 0
+    }
+
+    /* Buttons (match index; add icy-blue secondary) */
+    .hero-actions{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap;justify-content:center}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:16px 20px;border-radius:14px;font-weight:800;
+      box-shadow:0 12px 28px rgba(0,0,0,.25);
+      transition:transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+      will-change:transform; cursor:pointer;
+    }
+    .btn:active{ transform:translateY(1px) scale(.99) }
+    .btn-primary{background:var(--accent);color:#111827;border:0}
+    .btn-primary:hover{ box-shadow:0 18px 40px rgba(242,107,29,.35) }
+    .btn-proper{
+      color:var(--ice);
+      background:linear-gradient(180deg, rgba(175,195,255,.10), rgba(175,195,255,.04));
+      border:1px solid rgba(175,195,255,.55);
+      box-shadow:0 10px 28px rgba(31,63,175,.18);
+    }
+    .btn-proper:hover{
+      background:linear-gradient(180deg, rgba(175,195,255,.18), rgba(175,195,255,.08));
+      border-color:rgba(175,195,255,.8);
+      box-shadow:0 0 22px rgba(31,63,175,.35), 0 16px 36px rgba(0,0,0,.35);
+      transform:translateY(-1px);
+    }
+
+    /* Layout */
+    .contact-wrap{
+      display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;
+    }
+    @media(max-width:900px){ .contact-wrap{grid-template-columns:1fr} }
+
+    /* Cards (match index dark cards) */
+    .card, .hero-card{
+      background:linear-gradient(180deg, rgba(6,10,20,.95), rgba(10,15,28,.88));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px; padding:28px; box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+    .card h4, .hero-card h3{ color:var(--accent); margin:0 0 10px; letter-spacing:.2px }
+
+    /* Form */
+    .contact-form{max-width:var(--form-max);margin:0 auto}
+    .form-group{display:grid;gap:6px;margin-bottom:12px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:520px){ .form-row{grid-template-columns:1fr} }
+    label{font-weight:700;color:#e5e7eb;font-size:14px}
+    input, select, textarea{
+      background:var(--input-bg);
+      border:1px solid var(--input-border);
+      color:var(--input-text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:15px; line-height:1.35; width:100%; box-sizing:border-box;
+    }
+    textarea{resize:vertical;min-height:120px}
+    select{height:44px}
+    input::placeholder, textarea::placeholder{ color:#94a3b8 }
+
+    /* Focus */
+    a:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+      outline:none; box-shadow:0 0 0 3px rgba(242,107,29,.35); border-color:rgba(242,107,29,.6)
+    }
+
+    /* File input + list */
+    input[type="file"]{ padding:8px 10px; font-size:14px }
+    input[type="file"]::-webkit-file-upload-button{
+      background:var(--accent); color:#111827; border:none; padding:8px 12px; border-radius:8px; font-weight:800; margin-right:8px; cursor:pointer
+    }
+    .file-list{ margin-top:8px; font-size:12px; color:var(--muted) }
+    .file-item{ display:flex; align-items:center; gap:8px; margin-bottom:4px }
+    .file-size{ color:var(--muted); font-size:11px }
+  </style>
+</head>
+<body>
+
+  <!-- Header include -->
+  <div id="header"></div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <span class="kicker">Trade Quotes • UK-wide</span>
+        <h1 id="hero-title" class="hero-title">Get a Quote</h1>
+        <p class="lede center">Professional signage quotes for trade customers — fast turnaround, straight talk, no fluff.</p>
+
+        <div class="hero-actions" role="group" aria-label="Quick links">
+          <a class="btn btn-proper" href="gallery.html">See recent work</a>
+          <a class="btn btn-primary" href="#quoteForm">Request a quote</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORM + INFO -->
+    <section aria-labelledby="form-heading">
+      <div class="container">
+        <div class="contact-wrap">
+
+          <!-- Form -->
+          <div class="hero-card">
+            <form class="contact-form" id="quoteForm" novalidate>
+              <h3 id="form-heading">Request a Quote</h3>
+
+              <div class="form-group">
+                <label for="company">Company Name *</label>
+                <input type="text" id="company" name="company" placeholder="e.g. North West Signs Ltd" required>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name *</label>
+                  <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" placeholder="you@company.co.uk" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" name="phone" inputmode="tel" placeholder="Optional">
+                </div>
+                <div class="form-group">
+                  <label for="postcode">Postcode</label>
+                  <input type="text" id="postcode" name="postcode" autocomplete="postal-code" placeholder="Optional">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="service">Service Required *</label>
+                <select id="service" name="service" required>
+                  <option value="">Select a service</option>
+                  <option value="3d-acrylic">3D Acrylic Letters</option>
+                  <option value="sign-trays">ACM & Aluminium Sign Trays</option>
+                  <option value="illumination">Illuminated & LED Signs</option>
+                  <option value="built-up-metal">Built-Up Metal Letters</option>
+                  <option value="cnc-laser">CNC & Laser Cutting</option>
+                  <option value="print">Print & Graphics</option>
+                  <option value="multiple">Multiple Services</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="project">Project Details *</label>
+                <textarea id="project" name="project" placeholder="Materials, sizes, quantities, finishes, illumination, deadline, delivery/collection…" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="timeline">Project Timeline</label>
+                <select id="timeline" name="timeline">
+                  <option value="">Select timeline</option>
+                  <option value="urgent">Urgent (1–2 weeks)</option>
+                  <option value="standard">Standard (3–4 weeks)</option>
+                  <option value="flexible">Flexible (5+ weeks)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="files">Upload Files (Optional)</label>
+                <input type="file" id="files" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.ai,.eps,.svg,.dwg,.dxf">
+                <small class="muted" style="font-size: 12px; margin-top: 4px; display: block;">
+                  Upload artwork, CAD files, photos, or reference docs (Max 10&nbsp;MB per file).
+                </small>
+                <div id="fileList" class="file-list" aria-live="polite"></div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Send Quote Request</button>
+            </form>
+          </div>
+
+          <!-- Info cards -->
+          <aside aria-label="Contact details and turnaround">
+            <div class="card">
+              <h4>📍 Location</h4>
+              <ul>
+                <li>Manchester collection available</li>
+                <li>UK-wide express delivery</li>
+              </ul>
+            </div><br>
+            <div class="card">
+              <h4>✉️ Quotes</h4>
+              <ul>
+                <li><a href="mailto:sales@signs2signs.co.uk">sales@signs2signs.co.uk</a></li>
+                <li>Quick response guaranteed</li>
+                <li>Same-day quotes for standard items</li>
+              </ul>
+            </div><br>
+            <div class="card">
+              <h4>⏱ Lead Time</h4>
+              <ul>
+                <li>Express manufacturing</li>
+                <li>Typical 5–15 working days</li>
+                <li>Priority scheduling for urgent jobs</li>
+              </ul>
+            </div><br>
+            <div class="card">
+              <h4>📂 File Requirements</h4>
+              <ul>
+                <li>Vectors preferred (AI, EPS, PDF)</li>
+                <li>High-resolution imagery</li>
+                <li>Dimensions & measurements</li>
+                <li>Material & finish specs</li>
+                <li>Any install constraints</li>
+              </ul>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Process (match site style) -->
+  <section class="process">
+  <div class="container center">
+    <h2>How It Works</h2>
+    <p class="muted">You design. We make. You fit.</p>
+    <div class="process-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px">
+      <div class="card" style="text-align:center">
+        <div class="process-number" style="font-size:28px;font-weight:700;color:var(--accent);margin-bottom:10px">1</div>
+        <h3 style="margin:0 0 8px;color:#fff">You Design</h3>
+        <p>Send CAD or artwork. We’ll sanity-check, tidy and confirm materials, sizes and fixings.</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="process-number" style="font-size:28px;font-weight:700;color:var(--accent);margin-bottom:10px">2</div>
+        <h3 style="margin:0 0 8px;color:#fff">We Make</h3>
+        <p>Built in Manchester — CNC, laser, print and fabrication in-house with right-first-time QC.</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="process-number" style="font-size:28px;font-weight:700;color:var(--accent);margin-bottom:10px">3</div>
+        <h3 style="margin:0 0 8px;color:#fff">You Fit</h3>
+        <p>Supplied ready-to-fit with fixings and templates. Collect in Manchester or ship UK-wide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <!-- Footer include -->
+  <div id="footer"></div>
+
+  <script>
+    // Include header & footer
+    async function include(file, target){
+      const res = await fetch(file);
+      const html = await res.text();
+      document.getElementById(target).innerHTML = html;
+    }
+    include('header.html','header');
+    include('footer.html','footer');
+  </script>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    // Initialize Supabase client
+    const supabase = createClient(
+      "https://ketluxsokzvlqozcdwxo.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtldGx1eHNva3p2bHFvemNkd3hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzNjAzOTIsImV4cCI6MjA3MDkzNjM5Mn0.NCPCOXJ4vD1PYb_sBgoyA6lSvkiRpb8IlA4X8XnltUs"
+    );
+
+    // Helpers
+    function readableSize(bytes){
+      const units = ['B','KB','MB','GB'];
+      let i = 0, n = bytes;
+      while(n >= 1024 && i < units.length-1){ n /= 1024; i++; }
+      return n.toFixed(n < 10 && i > 0 ? 1 : 0) + ' ' + units[i];
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('quoteForm');
+      const submitButton = form?.querySelector('button[type="submit"]');
+      const fileInput = document.getElementById('files');
+      const fileList = document.getElementById('fileList');
+      if (!form) return;
+
+      // Show selected files
+      fileInput?.addEventListener('change', () => {
+        fileList.innerHTML = '';
+        const files = fileInput.files || [];
+        [...files].forEach(f => {
+          const row = document.createElement('div');
+          row.className = 'file-item';
+          row.innerHTML = `<span>📎 ${f.name}</span><span class="file-size">(${readableSize(f.size)})</span>`;
+          fileList.appendChild(row);
+        });
+      });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Uploading files...';
+        }
+
+        // Get basic form data
+        const formData = new FormData(form);
+        const files = formData.getAll('files');
+
+        let uploadedFileUrls = [];
+
+        // Upload to Supabase Storage
+        if (files.length > 0 && files[0] && files[0].size > 0) {
+          try {
+            for (const file of files) {
+              if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                throw new Error(`File "${file.name}" is too large. Maximum size is 10MB.`);
+              }
+              const fileExt = file.name.split('.').pop();
+              const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+              const filePath = `quote-files/${fileName}`;
+
+              if (submitButton) submitButton.textContent = `Uploading ${file.name}…`;
+
+              const { error: uploadError } = await supabase.storage
+                .from('quote-files')
+                .upload(filePath, file);
+
+              if (uploadError) {
+                console.error('File upload error:', uploadError);
+                throw new Error(`Failed to upload file "${file.name}"`);
+              }
+
+              const { data: urlData } = supabase.storage
+                .from('quote-files')
+                .getPublicUrl(filePath);
+
+              uploadedFileUrls.push({
+                name: file.name,
+                url: urlData.publicUrl,
+                size: file.size
+              });
+            }
+          } catch (fileError) {
+            console.error('File handling error:', fileError);
+            alert(fileError.message || 'Error uploading files. Please try again.');
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = 'Send Quote Request';
+            }
+            return;
+          }
+        }
+
+        if (submitButton) submitButton.textContent = 'Saving quote…';
+
+        // Prepare quote data
+        const quoteData = {
+          company: formData.get('company'),
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone') || null,
+          postcode: formData.get('postcode') || null,
+          service: formData.get('service'),
+          project_details: formData.get('project'),
+          timeline: formData.get('timeline') || null,
+          uploaded_files: uploadedFileUrls.length > 0 ? JSON.stringify(uploadedFileUrls) : null,
+        };
+
+        try {
+          const { error } = await supabase
+            .from('quote_requests')
+            .insert([quoteData]);
+
+          if (error) {
+            console.error('Supabase error:', error);
+            alert('Sorry, there was an error submitting your quote request. Please try again or contact us directly at sales@signs2signs.co.uk');
+          } else {
+            const fileMessage = uploadedFileUrls.length > 0 ? ` Your ${uploadedFileUrls.length} file(s) have also been uploaded.` : '';
+            alert(`Thanks! Your quote request has been submitted successfully.${fileMessage} We'll be in touch within 24 hours.`);
+            form.reset();
+            if (fileList) fileList.innerHTML = '';
+          }
+        } catch (err) {
+          console.error('Error submitting form:', err);
+          alert('Sorry, there was an error submitting your quote request. Please try again or contact us directly at sales@signs2signs.co.uk');
+        }
+
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Send Quote Request';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<footer class="site-foot" role="contentinfo">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent: #F26B1D;
+      --bg-dark: #0a0f1a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --container-max: 1200px;
+      --gutter: 0px;
+    }
+
+    .site-foot{
+      position: relative;
+      background: rgba(10,15,28,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 40px 0 28px;
+    }
+
+    .site-foot .container{
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+
+    .foot{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .muted{ color: var(--muted); }
+    .white{ color: #fff; }
+
+    .contact p,
+    .contact address{ margin: 6px 0; }
+
+    .contact a,
+    .quick-links a{
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+      transition: border-color .2s ease, color .2s ease;
+    }
+    .contact a:hover,
+    .contact a:focus-visible,
+    .quick-links a:hover,
+    .quick-links a:focus-visible{
+      color: #fff;
+      border-bottom-color: currentColor;
+      outline: none;
+    }
+
+    .social-icons{
+      display: flex; gap: 16px; margin-top: 12px;
+    }
+    .social-icons a{
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      color: var(--accent);
+      transition: transform .15s ease, color .2s ease, background .2s ease;
+    }
+    .social-icons a:hover,
+    .social-icons a:focus-visible{
+      color: #0b0b0b;
+      background: #fff;
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .social-icons i{ font-size: 20px; line-height: 1; }
+
+    .right-links{ text-align: right; }
+    .right-links .logo{ display: inline-block; margin-bottom: 14px; }
+
+    .site-foot .foot-note{
+      text-align: center;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1024px){
+      .foot{ grid-template-columns: 1fr; text-align: center; }
+      .right-links{ text-align: center; }
+      .social-icons{ justify-content: center; }
+    }
+  </style>
+
+  <div class="container">
+    <div class="foot">
+      <!-- Left -->
+      <div class="contact">
+        <p class="muted">Manchester • UK-wide • Trade supply only</p>
+        <address class="muted" style="font-style: normal;">Reliance St, Manchester M40 3AG</address>
+        <p>
+          <a href="tel:+441616817515">0161 681 7515</a> •
+          <a href="mailto:sales@signs2signs.com">sales@signs2signs.com</a>
+        </p>
+        <p class="muted">Mon–Fri 08:30–16:30</p>
+
+        <div class="social-icons" aria-label="Social links">
+          <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://linkedin.com/company/yourhandle" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener" aria-label="X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="right-links">
+        <a class="logo" href="/" aria-label="Signs2Signs home">
+          <!-- fixed path -->
+          <img src="/public/S2S.svg" alt="S2S monogram logo" height="92" loading="lazy">
+        </a>
+        <p class="quick-links muted">
+          <b class="white">Quick links</b><br>
+          <a href="/services.html">Services</a> ·
+          <a href="/contact.html#quote">Get a Quote</a> ·
+          <a href="/gallery.html">Gallery</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="foot-note">
+      © <span id="year"></span> Signs2Signs.
+    </p>
+  </div>
+
+  <script>
+    (function(){
+      var el=document.getElementById('year');
+      if(el) el.textContent=new Date().getFullYear();
+    })();
+  </script>
+</footer>

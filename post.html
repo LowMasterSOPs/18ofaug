@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog Post | Signs2Signs</title>
+  <meta name="description" content="">
+  <link rel="icon" type="image/svg+xml" href="/public/S2S.svg" />
+  <style>
+    :root{
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
+      --muted:#cbd5e1;
+      --accent:#F26B1D;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;color:#f8fafc;font-family:Manrope,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        url("/public/WEBBG8.png") no-repeat top right fixed,
+        linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%);
+      background-size:auto, cover;
+    }
+    /* Global link colour */
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline }
+
+    .container{max-width:900px;margin:0 auto;padding:32px 20px}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:14px;padding:24px;margin-bottom:24px}
+    h1{margin:0 0 20px;font-size:clamp(28px,5vw,44px)}
+    .post-hero img{width:100%;max-height:400px;object-fit:cover;border-radius:12px}
+    .post-meta{margin:12px 0 24px;color:var(--muted);font-size:14px}
+    .post-body{line-height:1.6}
+    .post-body p{margin:1em 0}
+    .post-body img{max-width:100%;border-radius:12px;margin:16px 0}
+
+    .share{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .share span{font-weight:600;margin-right:10px}
+    .share a{display:inline-block;padding:8px 16px;border-radius:6px;color:#111827;font-weight:600;text-decoration:none;background:var(--accent);transition:background .2s}
+    .share a:hover{background:#ff823c}
+
+    .comments h2{margin-bottom:16px}
+    #comment-form{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+    #comment-form input,#comment-form textarea{padding:10px;border-radius:6px;border:1px solid var(--stroke);font:inherit}
+    #comment-form button{background:var(--accent);color:#111827;font-weight:600;padding:10px;border:none;border-radius:6px;cursor:pointer}
+    #comment-form button:hover{background:#ff823c}
+    .comment-item{background:var(--card);padding:12px 16px;border-radius:8px;margin-bottom:12px;border:1px solid var(--stroke)}
+    .comment-item .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="container">
+    <article id="post" class="card">Loading post…</article>
+
+    <section id="share-section" class="card" style="display:none">
+      <div class="share">
+        <span>Share this post:</span>
+        <a id="share-linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <a id="share-facebook" target="_blank" rel="noopener">Facebook</a>
+        <a id="share-twitter" target="_blank" rel="noopener">Twitter</a>
+      </div>
+    </section>
+
+    <section class="card comments">
+      <h2>Comments</h2>
+      <form id="comment-form">
+        <input type="text" id="comment-name" placeholder="Your name" required>
+        <input type="email" id="comment-email" placeholder="Your email" required>
+        <textarea id="comment-text" placeholder="Your comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+      <div id="comments-list">Loading comments…</div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- Absolute path so it loads at /blog/<slug> -->
+  <script type="module" src="/post.js"></script>
+</body>
+</html>

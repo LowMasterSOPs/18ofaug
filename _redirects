@@ -1,0 +1,6 @@
+# Blog list
+/blog      /blog.html   200
+/blog/     /blog.html   200
+
+# Individual posts (pretty URLs)
+/blog/*    /post.html   200

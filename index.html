@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signs2Signs | Trade Signage, Built in Manchester</title>
+  <meta name="description" content="Trade-only signage supply. You design, we make — you fit. CNC, print & fabrication in-house. UK-wide delivery or Manchester collection.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="public/S2S.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand:#0B1B4A; --brand-2:#1F3FAF;
+      --accent:#F26B1D; --bg:#0A0F1C;
+      --ice:#AFC3FF;
+      --muted:#9CA3AF;
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.25);
+      --gutter:24px;
+    }
+
+    html,body{
+      margin:0; padding:0;
+      font-family:Manrope,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+      color:#f8fafc;
+      background:
+        url("public/WEBBG5.png") no-repeat top right fixed,
+        linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%);
+      background-size: auto, cover;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
+    }
+    body{ padding-left:var(--gutter); padding-right:var(--gutter); }
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background:
+        radial-gradient(60% 60% at 18% 22%, rgba(242,107,29,.18) 0%, rgba(242,107,29,0) 60%),
+        radial-gradient(70% 70% at 82% 14%, rgba(31,63,175,.22) 0%, rgba(31,63,175,0) 65%);
+      filter:blur(110px); z-index:-1;
+    }
+
+    @media (max-width:768px){
+      html,body{ background: linear-gradient(180deg,#0B1B4A 0%,#0A0F1C 60%); }
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin:0 auto}
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+
+    /* Layout */
+    section{padding:36px 0}
+    .hero{padding:84px 0 56px;text-align:center; position:relative;}
+
+    /* Typography */
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      color:#c7d2fe;background:rgba(99,102,241,.15);
+      border:1px solid rgba(99,102,241,.35);
+      padding:6px 12px;border-radius:999px;font-weight:800;letter-spacing:.2px
+    }
+    h1.hero-title{
+      font-weight:800;
+      margin:18px 0 10px;color:#fff;
+      line-height:.95; letter-spacing:-.02em;
+      font-size:clamp(48px,10vw,120px);
+    }
+    .hero-title .mint{
+      background: linear-gradient(90deg,#F26B1D 0%, #FFC09A 50%, #F26B1D 100%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero-title .proper{ color:var(--ice); text-shadow:0 4px 30px rgba(31,63,175,.35); }
+
+    .lede{
+      font-size:clamp(16px,2.2vw,22px);
+      color:#e5e7eb;opacity:.95;max-width:900px;margin:12px auto 0
+    }
+
+    .hero-actions{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:16px 20px;border-radius:14px;font-weight:800;
+      box-shadow:0 12px 28px rgba(0,0,0,.25);
+      transition:transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+      will-change:transform;
+    }
+    .btn:active{ transform:translateY(1px) scale(.99) }
+    .btn-primary{background:var(--accent);color:#111827}
+    .btn-primary:hover{ box-shadow:0 18px 40px rgba(242,107,29,.35) }
+
+    /* PROPER-styled (icy blue) secondary */
+    .btn-proper{
+      color:var(--ice);
+      background:linear-gradient(180deg, rgba(175,195,255,.10), rgba(175,195,255,.04));
+      border:1px solid rgba(175,195,255,.55);
+      box-shadow:0 10px 28px rgba(31,63,175,.18);
+    }
+    .btn-proper:hover{
+      background:linear-gradient(180deg, rgba(175,195,255,.18), rgba(175,195,255,.08));
+      border-color:rgba(175,195,255,.8);
+      box-shadow:0 0 22px rgba(31,63,175,.35), 0 16px 36px rgba(0,0,0,.35);
+      transform:translateY(-1px);
+    }
+    .btn-proper:hover .star{
+      opacity:1; transform:scale(1) rotate(0deg);
+      animation: twinkle .6s ease forwards;
+    }
+    @keyframes twinkle{
+      0%,100%{ transform:scale(1) rotate(0deg); opacity:1 }
+      50%{ transform:scale(1.3) rotate(15deg); opacity:.7 }
+    }
+
+    /* Badges */
+    .badges{ margin-top:22px; overflow:hidden; mask-image:linear-gradient(90deg,transparent,black 10%, black 90%, transparent) }
+    .badge-track{ display:flex; gap:14px; white-space:nowrap; animation:slide 20s linear infinite }
+    .badge{border:1px solid rgba(255,255,255,.18); padding:8px 12px; border-radius:999px; color:#cbd5e1; background:rgba(255,255,255,.06)}
+    @keyframes slide { from{ transform:translateX(0)} to{ transform:translateX(-50%) } }
+    @media (prefers-reduced-motion:reduce){ .badge-track{ animation:none } }
+
+    /* Section headings */
+    section h2{color:#fff;font-size:clamp(26px,3.6vw,40px);margin:0 0 18px;text-align:center}
+    section p{color:#cbd5e1;margin:0 0 10px}
+
+    /* ===== Feature Cards ===== */
+    .cards{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(6,10,20,.95), rgba(10,15,28,.88));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;
+      padding:30px;
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+      color:#fff;
+    }
+    .card h3{
+      margin:0 0 10px;
+      color:var(--accent);
+      letter-spacing:.2px;
+      font-size:clamp(18px,2vw,22px);
+    }
+    .card p{ margin:0; color:#e9edf3 }
+    .card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 16px 40px rgba(242,107,29,.22);
+      border-color:rgba(242,107,29,.45);
+    }
+
+    /* ===== Services icon grid ===== */
+    .svc-icons{
+      display:grid; grid-template-columns:repeat(6,1fr); gap:16px; margin-top:20px;
+    }
+    .svc-tile{
+      background:linear-gradient(180deg,rgba(16,23,42,.96),rgba(16,23,42,.72));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:18px;
+      text-align:center;
+      display:grid; gap:10px; align-content:center; justify-items:center;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .svc-tile:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 36px rgba(242,107,29,.18);
+      border-color:rgba(242,107,29,.55);
+    }
+    .svc-tile .ic{
+      display:grid; place-items:center;
+      width:48px; height:48px; border-radius:12px;
+      background:rgba(242,107,29,.10); color:var(--accent);
+    }
+    .svc-tile svg{ width:28px; height:28px; stroke:currentColor; fill:none; stroke-width:2; }
+    .svc-tile strong{ color:#fff; font-size:14px }
+
+    /* Scroll cue */
+    .scroll-cue{
+      position:absolute; left:50%; transform:translateX(-50%);
+      bottom:14px; font-size:12px; color:#cbd5e1; opacity:.7;
+    }
+
+    /* Sticky CTA (mobile) */
+    .sticky-cta{
+      position:fixed; left:0; right:0; bottom:12px; z-index:50; display:none; justify-content:center;
+    }
+    .sticky-cta a{
+      backdrop-filter:saturate(140%) blur(6px);
+      background:rgba(242,107,29,.95); color:#111827;
+      border-radius:999px; padding:14px 18px; font-weight:800; box-shadow:0 12px 28px rgba(242,107,29,.35);
+    }
+
+    /* Responsive */
+    @media (max-width:1200px){ .svc-icons{ grid-template-columns:repeat(3,1fr) } }
+    @media (max-width:1024px){
+      :root{--gutter:16px}
+      .cards{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:780px){
+      .svc-icons{ grid-template-columns:repeat(2,1fr) }
+    }
+    @media (max-width:640px){
+      :root{--gutter:12px}
+      .cards{grid-template-columns:1fr}
+      .container, section, .hero, .center { text-align:center; }
+      .kicker { margin-inline:auto; }
+      .hero-actions { justify-content:center; }
+
+      /* HIDE ticker + sticky CTA on mobile */
+      .badges { display:none !important; }
+      .sticky-cta{ display:none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header include -->
+  <div id="header"></div>
+
+  <!-- Main -->
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <span class="kicker">Manchester • Trade Sign Specialists</span>
+
+        <h1 id="hero-title" class="hero-title">
+          SIGNS THAT LOOK <span class="mint">MINT.</span><br>
+          BUILT <span class="proper">PROPER</span>.<br>
+          READY TO FIT.
+        </h1>
+
+        <p class="lede">
+          Your designs, our graft. Cut, fab and finish under one roof.<br>
+          Collect in Manny or get it dropped at your door.
+        </p>
+
+        <div class="hero-actions" role="group" aria-label="Primary actions">
+          <a class="btn btn-primary" href="contact.html#quote">Price it up</a>
+          <a class="btn btn-proper" href="gallery.html">See recent work </a>
+        </div>
+
+        <br>
+
+        <!-- badges (hidden on mobile) -->
+        <div class="badges" aria-hidden="true">
+          <div class="badge-track">
+            <span class="badge">⚡ Fast lead times</span>
+            <span class="badge">🛠️ CNC • Laser • Print</span>
+            <span class="badge">🧰 Trade-only fabrication</span>
+            <span class="badge">📦 UK-wide delivery</span>
+            <span class="badge">✨ Tidy finishes</span>
+            <span class="badge">🔶 3D acrylic letters</span>
+            <span class="badge">🧲 Built-up metal</span>
+            <span class="badge">🧱 Sign trays (ACM & aluminium)</span>
+            <span class="badge">💡 Halo & face-lit</span>
+            <span class="badge">🌟 Neon & embedded</span>
+            <span class="badge">📐 Flat cut letters</span>
+            <span class="badge">📏 Templates & fixings included</span>
+            <span class="badge">🎨 Colour-matched finishes</span>
+            <span class="badge">🧪 Powder-coated</span>
+            <span class="badge">🔍 Right-first-time QC</span>
+            <span class="badge">🧭 Collect in Manchester</span>
+            <span class="badge">🚚 Express courier options</span>
+            <span class="badge">🧩 CAD help available</span>
+
+            <!-- duplicate for seamless loop -->
+            <span class="badge">⚡ Fast lead times</span>
+            <span class="badge">🛠️ CNC • Laser • Print</span>
+            <span class="badge">🧰 Trade-only fabrication</span>
+            <span class="badge">📦 UK-wide delivery</span>
+            <span class="badge">✨ Tidy finishes</span>
+            <span class="badge">🔶 3D acrylic letters</span>
+            <span class="badge">🧲 Built-up metal</span>
+            <span class="badge">🧱 Sign trays (ACM & aluminium)</span>
+            <span class="badge">💡 Halo & face-lit</span>
+            <span class="badge">🌟 Neon & embedded</span>
+            <span class="badge">📐 Flat cut letters</span>
+            <span class="badge">📏 Templates & fixings included</span>
+            <span class="badge">🎨 Colour-matched finishes</span>
+            <span class="badge">🧪 Powder-coated</span>
+            <span class="badge">🔍 Right-first-time QC</span>
+            <span class="badge">🧭 Collect in Manchester</span>
+            <span class="badge">🚚 Express courier options</span>
+            <span class="badge">🧩 CAD help available</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 dark feature cards -->
+    <section aria-labelledby="why-us">
+      <div class="container">
+        <h2 id="why-us">Built here. Built to last. Built for trade.</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Experience + Innovation</h3>
+            <p>From 3D acrylic letters to aluminium trays, every sign is built to the highest standard. Craft meets state-of-the-art kit.</p>
+          </div>
+          <div class="card">
+            <h3>Speed + Capacity</h3>
+            <p>One-offs or high-volume rollouts across the UK & Europe — we’ve got the people and machines to deliver on time.</p>
+          </div>
+          <div class="card">
+            <h3>All Shapes + Sizes</h3>
+            <p>Flat cut logos, built-up acrylics, composite trays — internal or external. If it can be made, we’ll make it proper.</p>
+          </div>
+          <div class="card">
+            <h3>Trusted Trade Partner</h3>
+            <p>Behind the scenes for nationals and independents alike. We help our trade clients hit deadlines without compromise.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services with icons -->
+    <section id="services" aria-labelledby="what-we-make">
+      <div class="container">
+        <h2 id="what-we-make">What we’re built for</h2>
+        <p class="lede center">Specialist manufacturing for the trade — from precision cutting to crisp illumination and tidy finishes.</p>
+
+        <div class="svc-icons" role="list">
+          <!-- 3D Acrylic -->
+          <a class="svc-tile" href="services.html#3d-acrylic" role="listitem" aria-label="3D Acrylic Letters">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20l8-16 8 16"/><path d="M7.5 14h9"/></svg>
+            </div>
+            <strong>3D Acrylic</strong>
+          </a>
+
+          <!-- Sign Trays -->
+          <a class="svc-tile" href="services.html#sign-trays" role="listitem" aria-label="Sign Trays">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 9h16"/></svg>
+            </div>
+            <strong>Sign Trays</strong>
+          </a>
+
+          <!-- Illumination -->
+          <a class="svc-tile" href="services.html#illumination" role="listitem" aria-label="Illumination">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.2 1.2 4.2 3 5.3.7.4 1 1.2 1 2.7h6c0-1.5.3-2.3 1-2.7 1.8-1.1 3-3.1 3-5.3a7 7 0 0 0-7-7z"/><path d="M9 12h6M9 18h6M10 22h4"/></svg>
+            </div>
+            <strong>Illumination</strong>
+          </a>
+
+          <!-- Built-up Metal -->
+          <a class="svc-tile" href="services.html#built-up-metal" role="listitem" aria-label="Built-up Metal Letters">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 16V8l8-4 8 4v8l-8 4-8-4z"/><path d="M12 4v16"/></svg>
+            </div>
+            <strong>Built-Up Metal</strong>
+          </a>
+
+          <!-- CNC & Laser Cutting -->
+          <a class="svc-tile" href="services.html#cnc-laser" role="listitem" aria-label="CNC and Laser Cutting">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 8h16"/><path d="M12 8v5"/><rect x="11" y="13" width="2" height="3" rx="0.5"/><rect x="3" y="17" width="18" height="3" rx="1"/><path d="M7 15h10"/></svg>
+            </div>
+            <strong>CNC &amp; Laser Cutting</strong>
+          </a>
+
+          <!-- Print -->
+          <a class="svc-tile" href="services.html#print-large-format" role="listitem" aria-label="Print & Large Format">
+            <div class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" rx="1"/><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 15h8"/></svg>
+            </div>
+            <strong>Print &amp; Graphics</strong>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="cta">
+      <div class="container center">
+        <h2 id="cta">Ready when you are</h2>
+        <p class="muted">Send your brief today; we’ll price it proper and advise what’ll work best.</p>
+        <p><a class="btn btn-primary" href="contact.html#quote">Start a quote</a></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky CTA (kept in DOM but hidden on mobile via CSS) -->
+  <div class="sticky-cta">
+    <a href="contact.html#quote" aria-label="Get a fast quote">Get a fast quote</a>
+  </div>
+
+  <!-- Footer include -->
+  <div id="footer"></div>
+
+  <script>
+    // Simple include helper for header/footer
+    async function include(file, target){
+      try{
+        const res = await fetch(file);
+        const html = await res.text();
+        document.getElementById(target).innerHTML = html;
+      }catch(e){
+        console.error('Include failed:', e);
+      }
+    }
+    include('header.html','header');
+    include('footer.html','footer');
+
+    // Respect reduced motion: pause badge track if requested
+    (function(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const track = document.querySelector('.badge-track');
+      const toggle = () => { if(track){ track.style.animation = mq.matches ? 'none' : ''; } };
+      if(mq.addEventListener){ mq.addEventListener('change', toggle); }
+      toggle();
+    })();
+  </script>
+</body>
+</html>
