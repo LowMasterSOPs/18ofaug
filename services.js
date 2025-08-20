@@ -56,12 +56,12 @@ function renderCards(services){
       ? `<ul class="service-features">${s.features.map(f=>`<li>${escapeHtml(f)}</li>`).join("")}</ul>`
       : ""
 
-    content.innerHTML = `
-      <h3>${escapeHtml(s.name)}</h3>
-      <p>${escapeHtml(s.short_desc || "")}</p>
-        <p>${escapeHtml(s.long_desc || "")}</p>
-      ${features}
-      <a class="learn" href="${linkFor(s)}">Learn more →</a>
+content.innerHTML = `
+  <h3>${escapeHtml(s.name)}</h3>
+  <p>${escapeHtml(s.short_desc || "")}</p>
+  <div class="long-desc">${s.long_desc || ""}</div>
+  ${features}
+  <a class="learn" href="${linkFor(s)}">Learn more →</a>
     `
 
     wrap.appendChild(img)
