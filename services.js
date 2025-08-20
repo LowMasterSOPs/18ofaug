@@ -59,6 +59,7 @@ function renderCards(services){
     content.innerHTML = `
       <h3>${escapeHtml(s.name)}</h3>
       <p>${escapeHtml(s.short_desc || "")}</p>
+        <p>${escapeHtml(s.long_desc || "")}</p>
       ${features}
       <a class="learn" href="${linkFor(s)}">Learn more →</a>
     `
