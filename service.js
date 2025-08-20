@@ -47,7 +47,7 @@ async function render(){
  <h1>${escapeHtml(s.name)}</h1>
   <p>${escapeHtml(s.short_desc || "")}</p>
   <div class="long-desc">${s.long_desc || ""}</div>
-      ${s.long_text || "<p>More details coming soon.</p>"}
+      ${s.Long_Text || "<p>More details coming soon.</p>"}
       ${features}
     </div>
     <p><a href="/services">← Back to all services</a></p>
