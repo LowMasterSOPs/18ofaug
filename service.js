@@ -46,6 +46,7 @@ async function render(){
     <div class="hero">${s.hero_image_url ? `<img src="${s.hero_image_url}" alt="${escapeHtml(s.name)}">` : ""}</div>
     <h1>${escapeHtml(s.name)}</h1>
     <p class="lede">${escapeHtml(s.short_desc || "")}</p>
+        <p class="lede">${escapeHtml(s.long_desc || "")}</p>
     <div class="body">
       ${s.long_desc || "<p>More details coming soon.</p>"}
       ${features}
