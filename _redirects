@@ -4,3 +4,5 @@
 
 # Individual posts (pretty URLs)
 /blog/*    /post.html   200
+
+/services/*   /service.html   200
