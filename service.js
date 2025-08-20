@@ -44,10 +44,10 @@ async function render(){
 
   host.innerHTML = `
     <div class="hero">${s.hero_image_url ? `<img src="${s.hero_image_url}" alt="${escapeHtml(s.name)}">` : ""}</div>
- <h1>${escapeHtml(s.name)}</h3>
+ <h1>${escapeHtml(s.name)}</h1>
   <p>${escapeHtml(s.short_desc || "")}</p>
   <div class="long-desc">${s.long_desc || ""}</div>
-      ${s.long_desc || "<p>More details coming soon.</p>"}
+      ${s.long_text || "<p>More details coming soon.</p>"}
       ${features}
     </div>
     <p><a href="/services">← Back to all services</a></p>
