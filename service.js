@@ -44,10 +44,9 @@ async function render(){
 
   host.innerHTML = `
     <div class="hero">${s.hero_image_url ? `<img src="${s.hero_image_url}" alt="${escapeHtml(s.name)}">` : ""}</div>
-    <h1>${escapeHtml(s.name)}</h1>
-    <p class="lede">${escapeHtml(s.short_desc || "")}</p>
-        <p class="lede">${escapeHtml(s.long_desc || "")}</p>
-    <div class="body">
+ <h1>${escapeHtml(s.name)}</h3>
+  <p>${escapeHtml(s.short_desc || "")}</p>
+  <div class="long-desc">${s.long_desc || ""}</div>
       ${s.long_desc || "<p>More details coming soon.</p>"}
       ${features}
     </div>
